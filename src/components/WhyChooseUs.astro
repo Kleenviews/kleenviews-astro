@@ -1,0 +1,58 @@
+---
+const points = [
+  { title: "Pure water — no chemicals", text: "Our water-fed pole system uses purified water only. Better for your property, your garden, and the environment." },
+  { title: "Fully contactless service", text: "We clean the outside without needing to enter your home. No disruption to your day." },
+  { title: "Flexible scheduling", text: "Weekly, fortnightly, monthly or one-off. We work around your life, not the other way around." },
+  { title: "No-obligation quotes", text: "Get a free quote with no pressure. If the price doesn't work for you, no hard feelings." },
+];
+
+const stats = [
+  { value: "100%", label: "Chemical-free window cleaning" },
+  { value: "4+", label: "Services under one local provider" },
+  { value: "Free", label: "No-obligation quote, every time" },
+  { value: "Local", label: "Based in West Sussex — not a franchise" },
+];
+---
+<section id="why" class="section section-alt">
+  <div class="container">
+    <p class="eyebrow">Why KleenViews</p>
+    <h2>A local service you can actually rely on</h2>
+    <p class="section-intro">
+      No call centres, no subcontractors, no surprises. Just a local professional who turns
+      up when agreed and leaves your property looking its best.
+    </p>
+
+    <div class="grid grid-2 points">
+      {points.map((point) => (
+        <div class="point">
+          <span class="check">✓</span>
+          <div>
+            <h4>{point.title}</h4>
+            <p>{point.text}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="grid grid-4 stats">
+      {stats.map((stat) => (
+        <div class="stat">
+          <div class="stat-value">{stat.value}</div>
+          <div class="stat-label">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-intro { max-width: 640px; color: var(--color-text-muted); margin-bottom: 2rem; }
+  .points { margin-bottom: 2.5rem; }
+  .point { display: flex; gap: 0.75rem; align-items: flex-start; }
+  .check { color: var(--color-secondary); font-weight: 700; font-size: 1.1rem; }
+  .point h4 { margin: 0 0 0.25rem; }
+  .point p { margin: 0; color: var(--color-text-muted); font-size: 0.95rem; }
+  .stats { text-align: center; border-top: 1px solid var(--color-border); padding-top: 2rem; }
+  .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--color-primary); }
+  .stat-label { color: var(--color-text-muted); font-size: 0.85rem; margin-top: 0.25rem; }
+</style>
