@@ -1,0 +1,31 @@
+---
+import { areas } from "../data/areas";
+import { site } from "../data/site-config";
+---
+<section id="areas" class="section section-alt">
+  <div class="container">
+    <p class="eyebrow">Where we work</p>
+    <h2>Areas Covered</h2>
+    <p class="section-intro">
+      We cover the following towns and villages in the Arun district. Not sure if we cover
+      you? Just ask — we're always looking to expand our rounds.
+    </p>
+
+    <div class="pill-list">
+      {areas.map((area) => <span class="pill">{area}</span>)}
+    </div>
+
+    <p class="not-listed">
+      <strong>Not on the list?</strong> We're actively growing our round. If you're in a
+      nearby village, get in touch and we'll let you know if we cover your area or can add
+      it.<br />
+      📞 <a href={site.phoneHref}>{site.phone}</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .section-intro { max-width: 640px; color: var(--color-text-muted); margin-bottom: 1.5rem; }
+  .pill-list { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
+  .not-listed { color: var(--color-text-muted); }
+</style>

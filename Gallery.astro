@@ -1,0 +1,147 @@
+---
+import { site } from "../data/site-config";
+
+const serviceOptions = [
+  "Window Cleaning",
+  "Fascia & Soffit Cleaning",
+  "Conservatory Cleaning",
+  "Solar Panel Cleaning",
+  "Multiple services",
+  "Not sure — please advise",
+];
+---
+<section id="quote" class="section">
+  <div class="container quote-grid">
+    <div class="quote-info">
+      <p class="eyebrow">Get in touch</p>
+      <h2>Request a Free Quote</h2>
+      <p>
+        Fill in the form and we'll get back to you with a no-obligation quote. Or call or
+        email directly if you prefer.
+      </p>
+      <ul class="contact-list">
+        <li>📞 <a href={site.phoneHref}>{site.phone}</a></li>
+        <li>✉️ <a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li>📍 {site.areaLabel}</li>
+      </ul>
+    </div>
+
+    <div class="card quote-form-card">
+      <h3>Free Quote Request</h3>
+      <p class="form-note">We'll reply within 24 hours — usually much sooner.</p>
+
+      <!--
+        Submissions are handled by netlify/functions/submit-quote.js via
+        the <script> below, which emails both KleenViews and the client
+        through Resend. Swap that function out later for a different
+        provider without touching this form markup.
+      -->
+      <form name="quote-request" id="quote-form">
+        <label>
+          Your Name *
+          <input type="text" name="name" required />
+        </label>
+
+        <label>
+          Phone Number
+          <input type="tel" name="phone" />
+        </label>
+
+        <label>
+          Email Address *
+          <input type="email" name="email" required />
+        </label>
+
+        <label>
+          Service Required
+          <select name="service">
+            <option value="">— Please select —</option>
+            {serviceOptions.map((option) => <option value={option}>{option}</option>)}
+          </select>
+        </label>
+
+        <label>
+          Property Address / Postcode
+          <input type="text" name="postcode" />
+        </label>
+
+        <label>
+          Anything else we should know?
+          <textarea name="message" rows="3"></textarea>
+        </label>
+
+        <button type="submit" class="btn btn-primary">Send Quote Request →</button>
+
+        <p class="form-status" aria-live="polite"></p>
+
+        <p class="form-note">
+          By submitting this form you agree to our
+          <a href={site.privacyPolicyUrl}>Privacy Policy</a>. No spam, no pressure.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById("quote-form") as HTMLFormElement | null;
+  const statusEl = form?.querySelector(".form-status") as HTMLElement | null;
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const originalLabel = submitBtn.textContent;
+
+    const payload = Object.fromEntries(new FormData(form).entries());
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+    if (statusEl) { statusEl.textContent = ""; statusEl.style.color = ""; }
+
+    try {
+      const res = await fetch("/.netlify/functions/submit-quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await res.json();
+
+      if (res.ok && result.ok) {
+        form.reset();
+        if (statusEl) {
+          statusEl.textContent = "Thanks — we've received your request and will be in touch with a no-obligation quote.";
+          statusEl.style.color = "var(--color-primary)";
+        }
+      } else {
+        throw new Error(result.error || "Something went wrong");
+      }
+    } catch (err) {
+      if (statusEl) {
+        statusEl.textContent = "Sorry, something went wrong sending your request — please call or email us directly.";
+        statusEl.style.color = "#c0392b";
+      }
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+    }
+  });
+</script>
+
+<style>
+  .quote-grid { display: grid; gap: 2rem; }
+  @media (min-width: 800px) {
+    .quote-grid { grid-template-columns: 1fr 1.4fr; align-items: start; }
+  }
+  .contact-list { list-style: none; padding: 0; margin: 1.5rem 0 0; display: flex; flex-direction: column; gap: 0.6rem; }
+  .quote-form-card form { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+  label { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.9rem; font-weight: 600; }
+  input, select, textarea {
+    font: inherit;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-weight: 400;
+  }
+  .form-status { font-weight: 600; font-size: 0.9rem; min-height: 1.2em; }
+  .form-note { color: var(--color-text-muted); font-size: 0.85rem; font-weight: 400; }
+</style>
