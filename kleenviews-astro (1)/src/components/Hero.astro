@@ -1,0 +1,48 @@
+---
+import { site } from "../data/site-config";
+
+const trustPoints = [
+  { icon: "💧", title: "Pure Water System", text: "Chemical-free cleaning — no detergents, no residue, just spotless glass" },
+  { icon: "✅", title: "Reliable & Regular", text: "One-off or regular rounds — you choose the frequency that suits you" },
+  { icon: "📍", title: "Locally Based", text: "Serving Climping, Littlehampton, Felpham, Middleton and nearby villages" },
+];
+---
+<section class="hero">
+  <div class="container hero-inner">
+    <p class="eyebrow">{site.regionTagline}</p>
+    <h1>Spotless results, <em>every time.</em></h1>
+    <p class="lead">
+      Professional exterior cleaning for homes across Littlehampton, Rustington, Felpham
+      and the surrounding villages. Pure water window cleaning, gutter clearance, fascia
+      cleaning and more — chemical free where it counts.
+    </p>
+    <div class="cta-row">
+      <a href="#quote" class="btn btn-primary">Get a Free Quote</a>
+      <a href={site.phoneHref} class="btn btn-secondary">📞 Call Now</a>
+    </div>
+
+    <div class="trust-bar grid grid-3">
+      {trustPoints.map((point) => (
+        <div class="trust-item">
+          <span class="trust-icon">{point.icon}</span>
+          <h3>{point.title}</h3>
+          <p>{point.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding: 3.5rem 0 2.5rem; text-align: center; }
+  .hero-inner { max-width: 760px; }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); }
+  h1 em { color: var(--color-primary); font-style: normal; }
+  .lead { color: #000000; font-size: 1.1rem; margin: 1rem 0 1.75rem; }
+  .cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .trust-bar { text-align: left; margin-top: 1rem; }
+  .trust-item { padding: 0.5rem; }
+  .trust-icon { font-size: 1.5rem; }
+  .trust-item h3 { font-size: 1rem; margin: 0.4rem 0 0.25rem; }
+  .trust-item p { color: var(--color-text-muted); font-size: 0.9rem; margin: 0; }
+</style>
